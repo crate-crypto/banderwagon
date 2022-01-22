@@ -177,6 +177,14 @@ impl Element {
     pub fn map_to_field(&self) -> Fq {
         self.0.x / self.0.y
     }
+
+    pub fn zero() -> Element {
+        Element(EdwardsProjective::zero())
+    }
+
+    pub fn is_zero(&self) -> bool {
+        *self == Element::zero()
+    }
 }
 
 fn is_positive(x: Fq) -> bool {
