@@ -145,22 +145,6 @@ impl Element {
     pub fn map_to_field(&self) -> Fq {
         self.0.x / self.0.y
     }
-
-    pub fn multi_scalar_mul(bases: &[Element], scalars: &[Fr]) -> Element {
-        let bases_inner: Vec<_> = bases.into_iter().map(|element| element.0).collect();
-
-        // XXX: Converting all of these to affine hurts performance
-        let bases = EdwardsProjective::batch_normalization_into_affine(&bases_inner);
-
-        let scalars: Vec<_> = scalars
-            .into_iter()
-            .map(|scalar| scalar.into_repr())
-            .collect();
-
-        let result = VariableBaseMSM::multi_scalar_mul(&bases, &scalars);
-
-        Element(result)
-    }
 }
 
 fn is_positive(x: Fq) -> bool {
@@ -170,6 +154,22 @@ fn is_positive(x: Fq) -> bool {
 fn legendre_check_point(x: &Fq) -> bool {
     let res = Fq::one() - (BandersnatchParameters::COEFF_A * x.square());
     res.legendre().is_qr()
+}
+
+pub fn multi_scalar_mul(bases: &[Element], scalars: &[Fr]) -> Element {
+    let bases_inner: Vec<_> = bases.into_iter().map(|element| element.0).collect();
+
+    // XXX: Converting all of these to affine hurts performance
+    let bases = EdwardsProjective::batch_normalization_into_affine(&bases_inner);
+
+    let scalars: Vec<_> = scalars
+        .into_iter()
+        .map(|scalar| scalar.into_repr())
+        .collect();
+
+    let result = VariableBaseMSM::multi_scalar_mul(&bases, &scalars);
+
+    Element(result)
 }
 
 #[cfg(test)]
