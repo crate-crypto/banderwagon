@@ -3,7 +3,7 @@ use ark_ff::{Field, One, PrimeField, SquareRootField, Zero};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, SerializationError};
 use bandersnatch::{BandersnatchParameters, EdwardsAffine, EdwardsProjective, Fq, Fr};
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Eq)]
 pub struct Element(EdwardsProjective);
 
 impl PartialEq for Element {
