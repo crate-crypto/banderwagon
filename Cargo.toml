@@ -6,13 +6,13 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tempfile = "3.2.0"
 bandersnatch = "0.1.1"
 ark-ff = { version = "^0.3.0", default-features = false }
 ark-ec = { version = "^0.3.0", default-features = false }
 ark-serialize = { version = "^0.3.0", default-features = false }
-# ark-ed-on-bls12-381 = { version = "^0.3.0" }
+
 hex = "0.4.3"
+
 [dev-dependencies]
 ark-std = "^0.3.0"
 
@@ -27,12 +27,6 @@ opt-level = 3
 debug = true
 debug-assertions = true
 incremental = true
-
-# criterion = "0.3.4"
-
-# [[bench]]
-# name = "benchmark_main"
-# harness = false
 
 
 [profile.test]
