@@ -1,3 +1,5 @@
+use std::ops::{Add, Mul, Neg, Sub};
+
 use ark_ec::{msm::VariableBaseMSM, ProjectiveCurve, TEModelParameters};
 use ark_ff::{Field, One, PrimeField, SquareRootField, Zero};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, SerializationError};
@@ -23,6 +25,35 @@ impl PartialEq for Element {
         }
 
         (x1 * y2) == (x2 * y1)
+    }
+}
+
+impl Mul<Fr> for Element {
+    type Output = Element;
+
+    fn mul(self, rhs: Fr) -> Self::Output {
+        Element(self.0.mul(rhs.into_repr()))
+    }
+}
+impl Add<Element> for Element {
+    type Output = Element;
+
+    fn add(self, rhs: Element) -> Self::Output {
+        Element(self.0 + rhs.0)
+    }
+}
+impl Sub<Element> for Element {
+    type Output = Element;
+
+    fn sub(self, rhs: Element) -> Self::Output {
+        Element(self.0 - rhs.0)
+    }
+}
+impl Neg for Element {
+    type Output = Element;
+
+    fn neg(self) -> Self::Output {
+        Element(-self.0)
     }
 }
 
@@ -90,6 +121,7 @@ impl CanonicalDeserialize for Element {
         Ok(Element(point))
     }
 }
+
 impl Element {
     pub fn to_bytes(&self) -> [u8; 32] {
         // We assume that internally this point is "correct"
