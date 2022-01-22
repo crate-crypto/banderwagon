@@ -153,11 +153,10 @@ impl Element {
         let mut bytes = bytes.to_vec();
         bytes.reverse();
 
-        let x: Fq = Fq::deserialize(&bytes[..]).expect("XXX: change to an result");
+        let x: Fq = Fq::deserialize(&bytes[..]).ok()?;
 
         let return_positive_y = true;
-        let point =
-            EdwardsAffine::get_point_from_x(x, return_positive_y).expect("change to a result");
+        let point = EdwardsAffine::get_point_from_x(x, return_positive_y)?;
 
         // check legendre - checks whether 1 - ax^2 is a QR
         // TODO: change the name of this method to subgroup_check or wrap it in a method named subgroup_check
